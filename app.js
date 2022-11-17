@@ -3,11 +3,11 @@ const express = require('express');
 //Variavel que cria uma instancia do express
 const app = express();
 
-//Requisição, resposta e next para ir para o próximo método
-app.use((req, res, next) => {
-    res.status(200).send({
-        mensagem: 'Ok, deu certo'
-    });
-});
+//cria a rota
+const rotaProdutos = require('./routes/produtos');
 
+//chama a rota
+app.use('/produtos', rotaProdutos);
+
+//Exporta os módulos
 module.exports = app;
