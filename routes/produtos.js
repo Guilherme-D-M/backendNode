@@ -13,5 +13,23 @@ router.post('/', (req, res, next) => {
     });
 });
 
+router.get('/:id_produto', (req, res, next) => {
+    //Pega o parametro do id que foi passado na url
+    const id = req.params.id_produto;
+
+    if (id =='especial'){
+        res.status(200).send({
+            mensagem: 'Parabens ID especial',
+            id: id
+        });
+    }else{
+        res.status(200).send({
+            mensagem: 'Passou um ID',
+            id: id
+        });
+    }
+});
+
+
 // Quando chama a referencia dos produtos, exporta os modulos
 module.exports = router;
