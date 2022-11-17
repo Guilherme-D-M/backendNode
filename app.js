@@ -1,15 +1,17 @@
-//Importa o express
-const express = require('express');
-//Variavel que cria uma instancia do express
-const app = express();
-const morgan = require('morgan');
+const express = require('express'); //Importa o express
+const app = express(); //Variavel que cria uma instancia do express
+const morgan = require('morgan'); //Importa o Morgan
+const bodyParser = require('body-parser'); //Importa o body Parser
 
 //cria a rota
 const rotaProdutos = require('./routes/produtos');
 const rotaPedidos = require('./routes/pedidos');
 
-//Biblioteca morgan para mostrar o log da API no console
-app.use(morgan('dev'));
+
+app.use(morgan('dev')); //Mostra o log da API no console
+
+app.use(bodyParser.urlencoded({ extended: false })); //apenas dados simples
+app.use(bodyParser.json()); //json de entrada
 
 //chama a rota
 app.use('/produtos', rotaProdutos);
