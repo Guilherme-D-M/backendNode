@@ -17,6 +17,21 @@ app.use(bodyParser.json()); //json de entrada
 app.use('/produtos', rotaProdutos);
 app.use('/pedidos', rotaPedidos);
 
+//CORS
+app.use((req, res, next) =>{
+    res.header('Access-Control-Allow-Origin', '*'); //origem que será aceito
+
+    res.header('Access-Control-Allow-Header', //cabeçalhos que serão aceitos
+    'Origin, X-Requrested-With,Content-Type, Accept, Authorization'
+    );
+    
+    if (req.method == 'OPTIONS'){ //métodos que serão aceitos
+        res.header('Access-Control-Allow-Method', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).send({});
+    }
+
+    next(); //continua 
+})
 
 //Tratamento caso não encontre rota
 app.use((req, res, next)=>{
