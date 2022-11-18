@@ -4,26 +4,30 @@ const mysql = require("./mysql").pool;
 
 // Retorna todos os produtos
 router.get('/', (req, res, next) => {
-    res.status(200).send({
-        mensagem: 'Retorna todos os produtos'
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error })}
+        conn.query(
+            'SELECT * FROM produtos;',
+            (error, resultado, field) => { //callback
+                if (error) { return res.status(500).send({ error: error })}
+                return res.status(200).send({response: resultado});
+            }  
+        )
     });
+
 });
 
 // Insere um produto
 router.post('/', (req, res, next) => {
 
     mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error })}
         conn.query(
             'INSERT INTO produtos (nome, preco) VALUES (?,?)',
             [req.body.nome, req.body.preco],
             (error, resultado, field) => { //callback
                 conn.release();
-                if (error){
-                    return res.status(500).send({
-                        error: error,
-                        response: null
-                    });
-                }
+                if (error) { return res.status(500).send({ error: error })}
                 res.status(201).send({
                     mensagem: 'Produto inserido com sucesso',
                     id_produto: resultado.insertId
