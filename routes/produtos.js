@@ -5,6 +5,8 @@ const mysql = require("./mysql").pool;
 //Upload de imagens
 const multer = require('multer');
 
+const login = require('../middleware/login');
+
 //Salva na pasta upload com o nome da imagem
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -24,7 +26,6 @@ const fileFilter = (req, file, cb) =>{
     }else{
         cb(null, false); //retorna false
     }
-
 }
 
 //Recebe o objeto criado acima
@@ -69,7 +70,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Insere um produto
-router.post('/', upload.single('produto_imagem'), (req, res, next) => {
+router.post('/', upload.single('produto_imagem'), login, (req, res, next) => {
     console.log(req.file);
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error })}
