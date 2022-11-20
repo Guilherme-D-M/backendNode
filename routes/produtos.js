@@ -29,7 +29,6 @@ router.get('/', (req, res, next) => {
             }  
         )
     });
-
 });
 
 // Insere um produto
@@ -91,10 +90,6 @@ router.get('/:id_produto', (req, res, next) => {
                     }
                 }
                 return res.status(201).send(response);
-                
-                res.status(202).send({
-                    mensagem: 'Produto removido com sucesso'
-                });
             }  
         )
     });
