@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 49155,
+            "askForPassword": true,
+            "driver": "MariaDB",
+            "name": "Ecommerce",
+            "database": "ecommerce",
+            "username": "root"
+        }
+    ]
+}
