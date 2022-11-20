@@ -33,31 +33,45 @@ router.get('/', (req, res, next) => {
 
 // Insere um pedido
 router.post('/', (req, res, next) => {
+    //VERIFICA SE TEM PRODUTO
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error })}
-        conn.query(
-            'INSERT INTO pedidos (id_produto, quantidade) VALUES (?,?)',
-            [req.body.id_produto, req.body.quantidade],
-            (error, result, field) => { //callback
-                conn.release();
-                if (error) { return res.status(500).send({ error: error })}
-                const response = {
-                    mensagem: 'Pedido inserido com sucesso',
-                    pedidoCriado:{
-                        id_pedido: result.id_pedido,
-                        id_produto: req.body.id_produto,
-                        quantidade: req.body.quantidade,
-                        request:{
-                            tipo: 'GET',
-                            descricao: 'Retorna todos os pedidos',
-                            url: 'http://localhost:3000/pedidos' //lista de todos os pedidos
-                        }               
+        conn.query('SELECT * FROM produtos WHERE id_produto = ?', [req.body.id_produto], 
+        (error, result, field) => {
+            if (error) { return res.status(500).send({ error: error })}
+
+            //SE NÃO TIVER RETORNA 404
+            if (result.length ==0){
+                return res.status(404).send({
+                    mensagem: 'Produto nao encontrado'
+                })
+            }
+            
+            //SE TIVER VAI DAR CONTINUIDADE NO PEDIDO
+            conn.query(
+                'INSERT INTO pedidos (id_produto, quantidade) VALUES (?,?)',
+                [req.body.id_produto, req.body.quantidade],
+                (error, result, field) => { //callback
+                    conn.release();
+                    if (error) { return res.status(500).send({ error: error })}
+                    const response = {
+                        mensagem: 'Pedido inserido com sucesso',
+                        pedidoCriado:{
+                            id_pedido: result.id_pedido,
+                            id_produto: req.body.id_produto,
+                            quantidade: req.body.quantidade,
+                            request:{
+                                tipo: 'GET',
+                                descricao: 'Retorna todos os pedidos',
+                                url: 'http://localhost:3000/pedidos' //lista de todos os pedidos
+                            }               
+                        }
                     }
-                }
-                return res.status(201).send(response);
-            }  
-        )
-    });
+                    return res.status(201).send(response);
+                }  
+            )
+        })
+    })
 });
 
 // Retorna os dados de um pedido
@@ -69,7 +83,6 @@ router.get('/:id_pedido', (req, res, next) => {
             [req.params.id_pedido],
             (error, result, field) => { //callback
                 if (error) { return res.status(500).send({ error: error })}
-                
                 if (result.length ==0){
                     return res.status(404).send({
                         mensagem: 'Não foi encontrado pedido com este ID'
@@ -102,6 +115,7 @@ router.delete('/', (req, res, next) => {
             'DELETE FROM pedidos WHERE id_pedido = ?', [req.body.id_pedido],
             (error, resultado, field) => { //callback
                 if (error) { return res.status(500).send({ error: error })}
+                
                 const response={
                     mensagem: 'Pedido removido com sucesso',
                     request:{
