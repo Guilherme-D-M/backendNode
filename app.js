@@ -10,6 +10,8 @@ const rotaPedidos = require('./routes/pedidos');
 
 app.use(morgan('dev')); //Mostra o log da API no console
 
+app.use('/uploads', express.static('uploads'))//disponibilizar a imagem globalmente, podendo ser acessada pelo localhost
+
 app.use(bodyParser.urlencoded({ extended: false })); //apenas dados simples
 app.use(bodyParser.json()); //json de entrada
 
