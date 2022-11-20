@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require("./mysql").pool;
 const bcrypt = require('bcrypt'); //Biblioteca para encriptar senha
-const { restart } = require('nodemon');
+const jwt = require('jsonwebtoken');
 
 router.post('/cadastro', (req, res, next)=>{
     mysql.getConnection((err, conn) => {
@@ -52,7 +52,20 @@ router.post('/login', (req, res, next)=> {
                     return res.status(401).send({ mensagem: 'Falha na autenticação' })
                 }
                 if (result){
-                    return res.status(200).send({ mensagem: 'Autenticado com sucesso' })
+                    const JWT_KEY = "segredo"; //chave para o token
+                    const token = jwt.sign({
+                        id_usuario: results[0].id_usuario,
+                        email: results[0].email
+                    },
+                    JWT_KEY, //chave
+                    {
+                        expiresIn: "1h"    
+                    });
+                    return res.status(200).send({ 
+                        mensagem: 'Autenticado com sucesso',
+                        token: token
+
+                    })
                 }
 
                 return res.status(401).send({ mensagem: 'Falha na autenticação' })
