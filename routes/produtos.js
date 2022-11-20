@@ -2,8 +2,21 @@ const express = require('express');
 const router = express.Router();
 const mysql = require("./mysql").pool;
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' })
 
+//Salva na pasta upload com o nome da imagem
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/')
+    },
+    filename: function(req, file, cb) {
+        //Necessario substituir o : por -. NO windows tem problema.
+        let data = new Date().toISOString().replace(/:/g, '-') + '-';
+        cb(null, data + file.originalname );
+    }
+});
+
+//Recebe o objeto criado acima
+const upload = multer({ storage: storage })
 
 // Retorna todos os produtos
 router.get('/', (req, res, next) => {
