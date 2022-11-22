@@ -1,4 +1,6 @@
 const mysql = require("./mysql").pool;
+const bcrypt = require('bcrypt'); //Biblioteca para encriptar senha
+const jwt = require('jsonwebtoken');
 
 exports.cadastrarUsuario = (req, res, next)=>{
     mysql.getConnection((err, conn) => {
