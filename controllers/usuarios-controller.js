@@ -1,4 +1,4 @@
-const mysql = require("./mysql").pool;
+const mysql = require("../routes/mysql").pool;
 const bcrypt = require('bcrypt'); //Biblioteca para encriptar senha
 const jwt = require('jsonwebtoken');
 
