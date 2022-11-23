@@ -25,7 +25,6 @@ exports.getProdutos = async(req, res, next) => {
     }
 }
 
-
 exports.postProdutos = async (req, res, next) => {
     try{
         const query = 'INSERT INTO produtos (nome, preco, imagem_produto) VALUES (?,?,?)';
@@ -116,7 +115,6 @@ exports.updateProdutos = async (req, res, next) => {
         return res.status(500).send( {error: error} );
     }         
 };
-
 
 exports.deleteProdutos = async (req, res, next) => {
     try {
