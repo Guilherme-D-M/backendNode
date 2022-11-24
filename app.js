@@ -7,6 +7,7 @@ const bodyParser = require('body-parser'); //Importa o body Parser
 const rotaProdutos = require('./routes/produtos');
 const rotaPedidos = require('./routes/pedidos');
 const rotaUsuarios = require('./routes/usuarios');
+const rotaImagens = require('./routes/imagens');
 
 app.use(morgan('dev')); //Mostra o log da API no console
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json()); //json de entrada
 app.use('/produtos', rotaProdutos);
 app.use('/pedidos', rotaPedidos);
 app.use('/usuarios', rotaUsuarios);
+app.use('/imagens', rotaImagens);
 
 //CORS
 app.use((req, res, next) =>{

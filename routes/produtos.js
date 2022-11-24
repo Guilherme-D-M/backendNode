@@ -56,6 +56,15 @@ router.patch('/', login.obrigatorio, ProdutosController.updateProdutos);
 // Exclui um produto
 router.delete('/', login.obrigatorio, ProdutosController.deleteProdutos);
 
+router.post('/:id_produto/imagem',
+    login.obrigatorio,
+    upload.single('produto_imagem'),
+    ProdutosController.postImagem      
+);
+
+router.get('/:id_produto/imagens',
+    ProdutosController.getImagens  
+);
 
 // Quando chama a referencia dos produtos, exporta os modulos
 module.exports = router;
