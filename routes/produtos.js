@@ -37,32 +37,32 @@ const upload = multer({
 })
 
 // Retorna todos os produtos
-router.get('/', ProdutosController.getProdutos);
+router.get('/', ProdutosController.getProducts);
 
 // Insere um produto
 router.post(
     '/', 
     login.obrigatorio, 
-    upload.single('produto_imagem'), 
-    ProdutosController.postProdutos
+    upload.single('productImage'),
+    ProdutosController.postProducts
 );
 
 // Retorna os dados de um produto
-router.get('/:id_produto', ProdutosController.getUmProduto);
+router.get('/:productId', ProdutosController.getProductDetail);
 
 // Altera um produto
-router.patch('/', login.obrigatorio, ProdutosController.updateProdutos);
+router.patch('/:productId', login.obrigatorio, ProdutosController.updateProducts);
 
 // Exclui um produto
-router.delete('/', login.obrigatorio, ProdutosController.deleteProdutos);
+router.delete('/:productId', login.obrigatorio, ProdutosController.deleteProducts);
 
-router.post('/:id_produto/imagem',
+router.post('/:productId/imagem',
     login.obrigatorio,
-    upload.single('produto_imagem'),
+    upload.single('productImage'),
     ProdutosController.postImagem      
 );
 
-router.get('/:id_produto/imagens',
+router.get('/:productId/imagens',
     ProdutosController.getImagens  
 );
 
