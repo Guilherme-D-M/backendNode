@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer'); //Upload de imagens
 const login = require('../middleware/login'); //Autenticação por rota JWT
 
-const productsController = require('../controllers/products-controller') //Controlers
+const productsController = require('../controllers/product-controller') //Controlers
 
 //Salva na pasta upload com o nome da imagem
 const storage = multer.diskStorage({

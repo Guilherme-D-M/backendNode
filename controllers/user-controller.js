@@ -2,7 +2,7 @@ const mysql = require("../routes/mysql");
 const bcrypt = require('bcrypt'); //Biblioteca para encriptar senha
 const jwt = require('jsonwebtoken');
 
-exports.cadastrarUsuario = async(req, res, next)=>{
+exports.createUser = async(req, res, next)=>{
 
     try{
         var query = 'SELECT * FROM users WHERE email = ?';
@@ -18,9 +18,9 @@ exports.cadastrarUsuario = async(req, res, next)=>{
             const results = await mysql.execute(query, [req.body.email,hash]);
 
             const response = {
-                mensagem: "Usuario criado com sucesso",
-                usuarioCriado: {
-                    id_usuario: results.insertId,
+                message: "Usuario criado com sucesso",
+                createdUser: {
+                    userId: results.insertId,
                     email: req.body.email
                 }
             }
@@ -43,7 +43,7 @@ exports.login = async(req, res, next)=> {
         if (await bcrypt.compareSync(req.body.senha, result[0].password)){
             const JWT_KEY = "segredo"; //chave para o token
             const token = jwt.sign({
-                id_usuario: result[0].userId,
+                userId: result[0].userId,
                 email: result[0].email
             },
             JWT_KEY, //chave

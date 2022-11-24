@@ -4,10 +4,10 @@ const morgan = require('morgan'); //Importa o Morgan
 const bodyParser = require('body-parser'); //Importa o body Parser
 
 //cria a rota
-const productRoute = require('./routes/products-route');
-const rotaPedidos = require('./routes/pedidos');
-const rotaUsuarios = require('./routes/usuarios');
-const rotaImagens = require('./routes/imagens');
+const productRoute = require('./routes/product-route');
+const orderRoute = require('./routes/order-route');
+const userRoute = require('./routes/user-route');
+const imagesRoute = require('./routes/image-route');
 
 app.use(morgan('dev')); //Mostra o log da API no console
 
@@ -18,9 +18,9 @@ app.use(bodyParser.json()); //json de entrada
 
 //chama a rota
 app.use('/products', productRoute);
-app.use('/pedidos', rotaPedidos);
-app.use('/usuarios', rotaUsuarios);
-app.use('/imagens', rotaImagens);
+app.use('/orders', orderRoute);
+app.use('/users', userRoute);
+app.use('/image', imagesRoute);
 
 //CORS
 app.use((req, res, next) =>{
