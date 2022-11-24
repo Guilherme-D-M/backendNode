@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer'); //Upload de imagens
 const login = require('../middleware/login'); //Autenticação por rota JWT
-const ProdutosController = require('../controllers/produtos-controller') //Controlers
+
+const productsController = require('../controllers/products-controller') //Controlers
 
 //Salva na pasta upload com o nome da imagem
 const storage = multer.diskStorage({
@@ -37,33 +38,33 @@ const upload = multer({
 })
 
 // Retorna todos os produtos
-router.get('/', ProdutosController.getProducts);
+router.get('/', productsController.getProducts);
 
 // Insere um produto
 router.post(
     '/', 
     login.obrigatorio, 
     upload.single('productImage'),
-    ProdutosController.postProducts
+    productsController.postProducts
 );
 
 // Retorna os dados de um produto
-router.get('/:productId', ProdutosController.getProductDetail);
+router.get('/:productId', productsController.getProductDetail);
 
 // Altera um produto
-router.patch('/:productId', login.obrigatorio, ProdutosController.updateProducts);
+router.patch('/:productId', login.obrigatorio, productsController.updateProducts);
 
 // Exclui um produto
-router.delete('/:productId', login.obrigatorio, ProdutosController.deleteProducts);
+router.delete('/:productId', login.obrigatorio, productsController.deleteProducts);
 
-router.post('/:productId/imagem',
+router.post('/:productId/image',
     login.obrigatorio,
     upload.single('productImage'),
-    ProdutosController.postImagem      
+    productsController.postImagem      
 );
 
-router.get('/:productId/imagens',
-    ProdutosController.getImagens  
+router.get('/:productId/images',
+    productsController.getImagens  
 );
 
 // Quando chama a referencia dos produtos, exporta os modulos

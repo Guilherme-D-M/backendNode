@@ -4,7 +4,7 @@ const morgan = require('morgan'); //Importa o Morgan
 const bodyParser = require('body-parser'); //Importa o body Parser
 
 //cria a rota
-const rotaProdutos = require('./routes/produtos');
+const productRoute = require('./routes/products-route');
 const rotaPedidos = require('./routes/pedidos');
 const rotaUsuarios = require('./routes/usuarios');
 const rotaImagens = require('./routes/imagens');
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false })); //apenas dados simples
 app.use(bodyParser.json()); //json de entrada
 
 //chama a rota
-app.use('/produtos', rotaProdutos);
+app.use('/products', productRoute);
 app.use('/pedidos', rotaPedidos);
 app.use('/usuarios', rotaUsuarios);
 app.use('/imagens', rotaImagens);
