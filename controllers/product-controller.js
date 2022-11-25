@@ -2,7 +2,21 @@ const mysql = require("../routes/mysql");
 
 exports.getProducts = async(req, res, next) => {
     try{    
-        const result = await mysql.execute('SELECT * FROM products;')
+
+        // condição criara para o filtro funcionar caso não tiver o nome do produto com a categoria:
+        // Exemplo: localhost:3000/products/?categoryId=1&name=ventilador
+        // Dessa maneira, localhost:3000/products/?categoryId=1 assim também funciona.
+        let name = '';
+        if(req.query.name){
+            name = req.query.name;
+        }
+
+        const query = `SELECT * 
+                         FROM products
+                        WHERE categoryId = ?
+                          AND name LIKE '%${name}%';
+                         `;
+        const result = await mysql.execute(query,[req.query.categoryId]) //localhost:3000/products/?categoryId=1
         const response = {
             lenght: result.length,
             products: result.map(prod => {
@@ -27,11 +41,12 @@ exports.getProducts = async(req, res, next) => {
 
 exports.postProducts = async (req, res, next) => {
     try{
-        const query = 'INSERT INTO products (name, price, productImage) VALUES (?,?,?)';
+        const query = 'INSERT INTO products (name, price, productImage, categoryId) VALUES (?,?,?,?)';
         const result = await mysql.execute(query, [
             req.body.name, 
             req.body.price,
-            req.file.path
+            req.file.path,
+            req.body.categoryId
         ]);
         const response = {
             message: 'Produto inserido com sucesso',
@@ -40,6 +55,7 @@ exports.postProducts = async (req, res, next) => {
                 name: req.body.name,
                 price: req.body.price,
                 productImage: req.file.path,
+                categoryId: req.body.categoryId,
                 request:{
                     type: 'GET',
                     description: 'Retorna todos os produtos',

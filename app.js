@@ -8,6 +8,7 @@ const productRoute = require('./routes/product-route');
 const orderRoute = require('./routes/order-route');
 const userRoute = require('./routes/user-route');
 const imagesRoute = require('./routes/image-route');
+const categoryRoute = require('./routes/category-route');
 
 app.use(morgan('dev')); //Mostra o log da API no console
 
@@ -21,6 +22,7 @@ app.use('/products', productRoute);
 app.use('/orders', orderRoute);
 app.use('/users', userRoute);
 app.use('/image', imagesRoute);
+app.use('/category', categoryRoute);
 
 //CORS
 app.use((req, res, next) =>{
