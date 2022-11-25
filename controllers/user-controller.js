@@ -5,24 +5,34 @@ const jwt = require('jsonwebtoken');
 exports.createUser = async(req, res, next)=>{
 
     try{
-        var query = 'SELECT * FROM users WHERE email = ?';
-        const result = await mysql.execute(query, [req.body.email])
+        // var elements = req.body.users.map(user =>{
+        //         return[
+        //         '"'+user.email+'"'
+        //         ]
+        //     })
+        // var text = elements.join(" , ");
+        // console.log(text);
 
-        if (result.length > 0){ //Verificar se ja possui email cadastrado
-            res.status(409).send({mensagem: "Usuario já cadastrado"})
-        } //caso não tiver, encripta a senha e manda pro banco de dados.
+        // var query = 'SELECT * FROM users WHERE email in (?);';
+        //  const result = await mysql.execute(query, text)
 
-        const hash = await bcrypt.hashSync(req.body.password, 10);
 
-            query = 'INSERT INTO users (email, password) VALUES (?,?);';
-            const results = await mysql.execute(query, [req.body.email,hash]);
+            const users = req.body.users.map(user => [
+                user.email,
+                bcrypt.hashSync(user.password, 10)
+            ])
+
+            // colunas no banco de dados estão como unique, não deixando inserir dados iguais.
+            query = 'INSERT INTO users (email, password) VALUES ?;';
+            const results = await mysql.execute(query, [ users ]);
 
             const response = {
                 message: "Usuario criado com sucesso",
-                createdUser: {
-                    userId: results.insertId,
-                    email: req.body.email
-                }
+                createdUsers: req.body.users.map(user =>{
+                    return{
+                    email: user.email
+                    }
+                })
             }
             return res.status(201).send(response)
     } catch (error){
