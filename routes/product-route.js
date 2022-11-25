@@ -43,7 +43,7 @@ router.get('/', productsController.getProducts);
 // Insere um produto
 router.post(
     '/', 
-    login.obrigatorio, 
+    login.required, 
     upload.single('productImage'),
     productsController.postProducts
 );
@@ -52,13 +52,13 @@ router.post(
 router.get('/:productId', productsController.getProductDetail);
 
 // Altera um produto
-router.patch('/:productId', login.obrigatorio, productsController.updateProducts);
+router.patch('/:productId', login.required, productsController.updateProducts);
 
 // Exclui um produto
-router.delete('/:productId', login.obrigatorio, productsController.deleteProducts);
+router.delete('/:productId', login.required, productsController.deleteProducts);
 
 router.post('/:productId/image',
-    login.obrigatorio,
+    login.required,
     upload.single('productImage'),
     productsController.postImagem      
 );

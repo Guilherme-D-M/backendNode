@@ -12,7 +12,7 @@ exports.createUser = async(req, res, next)=>{
             res.status(409).send({mensagem: "Usuario já cadastrado"})
         } //caso não tiver, encripta a senha e manda pro banco de dados.
 
-        const hash = await bcrypt.hashSync(req.body.senha, 10);
+        const hash = await bcrypt.hashSync(req.body.password, 10);
 
             query = 'INSERT INTO users (email, password) VALUES (?,?);';
             const results = await mysql.execute(query, [req.body.email,hash]);
@@ -40,7 +40,7 @@ exports.login = async(req, res, next)=> {
             return res.status(401).send({ mensagem: 'Falha na autenticação' })
         }
 
-        if (await bcrypt.compareSync(req.body.senha, result[0].password)){
+        if (await bcrypt.compareSync(req.body.password, result[0].password)){
             const JWT_KEY = "segredo"; //chave para o token
             const token = jwt.sign({
                 userId: result[0].userId,

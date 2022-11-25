@@ -7,13 +7,13 @@ const PedidosController = require('../controllers/order-controller')
 router.get('/', PedidosController.getOrders);
 
 // Insere um pedido
-router.post('/', login.obrigatorio, PedidosController.postOrder);
+router.post('/', login.required, PedidosController.postOrder);
 
 // Retorna os dados de um pedido
-router.get('/:orderId', login.obrigatorio, PedidosController.getOrderDetail);
+router.get('/:orderId', login.required, PedidosController.getOrderDetail);
 
 // Exclui um pedidos
-router.delete('/', login.obrigatorio, PedidosController.deleteOrder);
+router.delete('/', login.required, PedidosController.deleteOrder);
 
 
 // Quando chama a referencia dos produtos, exporta os modulos
